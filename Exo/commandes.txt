@@ -1,7 +1,7 @@
 ls | grep log | wc -l
 
 
-
+grep -r "500" *.txt > results.log
 
 
 
