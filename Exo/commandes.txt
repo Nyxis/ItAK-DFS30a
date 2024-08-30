@@ -1,1 +1,9 @@
 ls | grep log | wc -l
+
+
+
+
+
+
+mkdir images
+find . -name "*.jpeg" -exec mv {} images/ \;
