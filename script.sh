@@ -12,6 +12,8 @@ create_project(){
   mkdir "$dir_rel"
   mkdir -p "$dir_sha/$dir_lib"
   mkdir -p "$dir_sha/$dir_lib/$dir_company"
+  touch "$dir_sha/mysupersecretproductionconfigfile.yaml"
+
 }
 
 create_date_dir(){
@@ -23,7 +25,14 @@ deletus(){
   rm -r `ls -t | tail -n +6`
 }
 
-OPTSTRING=":abc"
+symbolic_link(){
+ latest_dir=$(ls -1dt "$dir_rel"/*/ | head -n 1)
+
+  ln -sf "$latest_dir" "$dir_proj/latest"
+}
+
+
+OPTSTRING=":abcd"
 
 while getopts ${OPTSTRING} opt; do
   case ${opt} in
@@ -38,6 +47,10 @@ while getopts ${OPTSTRING} opt; do
     c)
       echo "Create date directory"
       create_date_dir
+      ;;
+    d)
+      echo "Symbolic link created"
+      symbolic_link
       ;;
     ?)
       echo "Invalid option: -${OPTARG}."
