@@ -63,7 +63,7 @@ Le dossier "shared" sert à publier des fichiers non versionnés dans une releas
 
 Dans un premier temps, affichez récursivement dans le terminal tous les fichiers présents dans le dossier "shared".
 Grâce à la commande précédente, copiez chacun de ces fichiers en suivant la même structure dans le dossier de release créé à l'étape 1.
-Ce système bien que suffisant n'est pas satisfaisant : dupliquer des fichiers de configuration n'amène que des erreurs à terme. À la place, il est possible de créer des liens symboliques pour que seule une instance du fichier demeure dans le système. Modifiez votre script pour faire des liens vers les fichiers du dossier "shared"
+Ce système bien que suffisant n'est pas satisfaisant : dupliquer des fichiers de configuration n'amène que des erreurs à terme. À la place, il e du dossier "shared"st possible de créer des liens symboliques pour que seule une instance du fichier demeure dans le système. Modifiez votre script pour faire des liens vers les fichiers
 __Tips__ : `ln -s chemin_fichier_source chemin_fichier_cible`
 
 Utilisez la même technique pour qu'il existe toujours un lien "current" vers la release en cours.
