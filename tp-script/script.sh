@@ -8,6 +8,8 @@ fi
 GIT_REPO=${GIT_REPO:-"https://github.com/Yo-Ikhelef/ItAK-DFS30a.git"}
 GIT_BRANCH=${GIT_BRANCH:-"main"}
 GIT_FOLDER=${GIT_FOLDER:-"."}
+BUILD_COMMAND=${BUILD_COMMAND:-""}
+ROLLBACK_COMMAND=${ROLLBACK_COMMAND:-""}
 
 if ! command -v git &> /dev/null
 then
@@ -59,6 +61,37 @@ create_symlinks() {
 	echo "Liens symboliques créés dans $RELEASE_PATH"
 }
 
+build_application(){
+	if [ -n "$BUILD_COMMAND" ]; then
+		echo "Lancement du build avec: $BUILD_COMMAND"
+		$BUILD_COMMAND
+		if [ $? -ne 0 ]; then 
+			echo "Le build a échoué"
+			exit 1
+		fi
+		
+	else
+		MAKEFILE_PATH=$(find "$RELEASE_PATH" -name "Makefile" -type f)
+
+		if [ -n "$MAKEFILE_PATH" ]; then
+			read -p "Un Makefile est disponible, souhaitez vous l'executer? (y/n)" yn
+			case $yn in
+				[Yy]* )
+					make -C "$(dirname "$MAKEFILE_PATH")" build
+                    if [ $? -ne 0 ]; then
+                        echo "Le build a échoué."
+                        exit 1
+                    fi
+					;;
+				[Nn]* ) echo "Build non executé";;
+				* ) echo "Répondez avec Y ou N"
+			esac
+		else
+			echo "Aucune commande de build ou makefile détecté, resuming operation.."
+		fi
+	fi
+}
+
 
 deploy() {
 
@@ -93,6 +126,8 @@ if [ "$GIT_FOLDER" != "." ]; then
 fi
 
 create_symlinks "$RELEASE_PATH"
+
+build_application
 
 ln -sfn "$RELEASE_PATH" project/current
 
