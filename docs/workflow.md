@@ -13,7 +13,7 @@ Vous disposez maintenant de votre propre dépôt dans lequel vous pouvez dépose
 ```shell
 git clone -b main <url copiée>
 cd <dossier créé>
-git remote add upstream git@github.com:Nyxis/ItAK-DFS28C.git
+git remote add upstream git@github.com:Nyxis/ItAK-DFS30a.git
 ```
 
 3/ Effectuez les exercices
