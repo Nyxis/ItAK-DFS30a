@@ -64,7 +64,26 @@ rollback() {
   echo "Rolled back to: $previous_release"
 }
 
+if [ -f .env ]; then
+  source .env
+fi
 
+
+check_git(){
+  if ! command -v git &> /dev/null; then
+     echo "Git is not installed. Please install Git to proceed."
+     exit 1
+   else
+     echo "Git is installed: $(git --version)"
+   fi
+
+}
+
+
+clone_repo(){
+    echo "Cloning repository from $GIT_REPO_URL..."
+
+}
 
 
 
@@ -87,6 +106,14 @@ while getopts ${OPTSTRING} opt; do
     d)
       echo "Symbolic link created"
       symbolic_link
+      ;;
+    e)
+      echo "Checking git"
+      check_git
+      ;;
+    f)
+      echo "Wanna clone?"
+      clone_repo
       ;;
     ?)
       echo "Invalid option: -${OPTARG}."
