@@ -1,5 +1,19 @@
 KEEP=5
 
+if [ -f .env ]; then
+	source .env
+fi
+
+#Valeurs par défaut
+GIT_REPO=${GIT_REPO:-"https://github.com/Yo-Ikhelef/ItAK-DFS30a.git"}
+GIT_BRANCH=${GIT_BRANCH:-"main"}
+GIT_FOLDER=${GIT_FOLDER:-"."}
+
+if ! command -v git &> /dev/null
+then
+	echo "git n'est pas installé - sortie"
+	exit 1
+fi
 
 create_project_structure() {
 	PROJECT_DIR="project"
@@ -13,7 +27,7 @@ create_project_structure() {
 		mkdir -p "$RELEASE_DIR"
 		echo "arborescence du dossier project créé avec succes"
 	else
-		echo "dossier project existe déja"
+		echo "Dossier project existant, skipping initialisation"
 	fi
 }
 
@@ -56,6 +70,28 @@ RELEASE_PATH="project/releases/$CURRENT_DATE"
 
 mkdir -p "$RELEASE_PATH"
 
+#sequence de clonage
+echo "Clonage du dépot $GIT_REPO (branche: $GIT_BRANCH) dans le dossier $GIT_FOLDER"
+git clone --branch "$GIT_BRANCH" --single-branch "$GIT_REPO" "$RELEASE_PATH"
+
+if [ "$GIT_FOLDER" != "." ]; then
+	if [ -d "$RELEASE_PATH/$GIT_FOLDER" ]; then
+		mkdir -p "$RELEASE_PATH/temp"
+		mv "$RELEASE_PATH/$GIT_FOLDER" "$RELEASE_PATH/temp/"
+		
+		find "$RELEASE_PATH" -mindepth 1 -maxdepth 1 ! -name "temp" -exec rm -rf {} +
+		
+		LAST_DIR=$(basename "$GIT_FOLDER")
+		
+		mv "$RELEASE_PATH/temp/$LAST_DIR" "$RELEASE_PATH"
+				
+		rm -rf "$RELEASE_PATH/temp"
+	else
+		echo "Le dossier $GIT_FOLDER n'existe pas dans le dépot"
+		exit 1
+	fi
+fi
+
 create_symlinks "$RELEASE_PATH"
 
 ln -sfn "$RELEASE_PATH" project/current
@@ -63,9 +99,7 @@ ln -sfn "$RELEASE_PATH" project/current
 cleanup_releases
 
 echo "La nouvelle release a été déployé: "$RELEASE_PATH""
-echo $KEEP
-
-
+echo "nombre de releases a conserver: $KEEP"
 }
 
 rollback() {
@@ -87,13 +121,22 @@ rollback() {
 command=$1
 shift
 
-while getopts ":k:" opt; do
+while getopts ":k:r:b:d:" opt; do
 	case ${opt} in
 		k )
 			KEEP=$OPTARG
 			;;
+		r )
+			GIT_REPO=$OPTARG
+			;;
+		b ) 
+			GIT_BRANCH=$OPTARG
+			;;
+		d )
+			GIT_FOLDER=$OPTARG
+			;;
 		\? )
-			echo "option invalide : $OPTARG" 1>$2
+			echo "option invalide : $OPTARG" 1>&2
 			exit 1
 			;;
 	esac
@@ -114,7 +157,7 @@ case $command in
 		create_project_structure
 		;;
 	*)
-		echo "Usage: $0 {deploy|rollback|create} [-k nombre_de_release_à_conserver]"
+		echo "Usage: $0 {deploy|rollback|create} [-k nombre_de_release_à_conserver] [-r repo] [-b branch] [-d dossier]"
 		exit 1
 		;;
 esac
