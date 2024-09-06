@@ -1,3 +1,9 @@
+set -e
+
+if [ -f .env ]; then
+  source .env
+fi
+
 PROJECT_DIR="project"
 RELEASES_DIR="$PROJECT_DIR/releases"
 SHARED_DIR="$PROJECT_DIR/shared"
@@ -6,13 +12,35 @@ NEW_RELEASE_DIR="$RELEASES_DIR/$DATE"
 CURRENT_LINK="$PROJECT_DIR/current"
 KEEP_RELEASES=5
 
-while getopts "k:" option; do
+if ! command -v git &> /dev/null; then
+  echo "Erreur : Git n'est pas installé ou non disponible dans le PATH."
+  exit 1
+fi
+
+GIT_REPO=${GIT_REPO:-""}
+GIT_BRANCH=${GIT_BRANCH:-""}
+GIT_SUBDIR=${GIT_SUBDIR:-""}
+BUILD_COMMAND=${BUILD_COMMAND:-""}
+
+while getopts "k:r:b:s:" option; do
   case "${option}" in
     k)
       KEEP_RELEASES=${OPTARG}
       ;;
+    r)
+      GIT_REPO=${OPTARG}
+      ;;
+    b)
+      GIT_BRANCH=${OPTARG}
+      ;;
+    s)
+      GIT_SUBDIR=${OPTARG}
+      ;;
+    c)
+      BUILD_COMMAND=${OPTARG}
+      ;;
     *)
-      echo "Merci d'utilisé cette syntaxe: $0 [-k number_of_releases_to_keep]"
+      echo "Merci d'utilisé cette syntaxe: $0 [-k number_of_releases_to_keep] [-r git_repo] [-b git_branch] [-s git_subdir] deploy|rollback"
       exit 1
       ;;
   esac
@@ -66,6 +94,36 @@ deploy() {
     echo "Release supprimée : $RELEASES_DIR/$RELEASE"
     done
 
+    TEMP_DIR="$PROJECT_DIR/tmp"
+    mkdir -p "$TEMP_DIR"
+    
+    git clone --branch "$GIT_BRANCH" --depth 1 "$GIT_REPO" "$TEMP_DIR"
+
+    if [ $? -ne 0 ]; then
+      echo "Erreur lors du clonage du dépôt Git."
+      rm -rf "$TEMP_DIR"
+      exit 1
+    fi
+
+    if [ -d "$TEMP_DIR/$GIT_SUBDIR" ]; then
+      cp -r "$TEMP_DIR/$GIT_SUBDIR" "$NEW_RELEASE_DIR/"
+      echo "Le sous-dossier $GIT_SUBDIR a été copié dans $NEW_RELEASE_DIR."
+    else
+      echo "Erreur : Le sous-dossier $GIT_SUBDIR n'existe pas dans le dépôt."
+      rm -rf "$TEMP_DIR"
+      exit 1
+    fi
+
+    if [ -n "$BUILD_COMMAND" ]; then
+      echo "Exécution de la commande de build : $BUILD_COMMAND"
+      ($BUILD_COMMAND)
+    elif [ -f "$NEW_RELEASE_DIR/clone_me/Makefile" ]; then
+      echo "Exécution du Makefile trouvé."
+      (cd "$NEW_RELEASE_DIR/clone_me" && make)
+    fi
+
+    rm -rf "$TEMP_DIR"
+
     echo "Structure finale du projet :"
     ls -R "$PROJECT_DIR"
 }
@@ -73,10 +131,8 @@ deploy() {
 rollback() {
   echo "Rollback à la version précédente"
 
-  # Récupérer la liste des releases triées par ordre décroissant (la première est la plus récente)
   RELEASES=$(ls -1t "$RELEASES_DIR")
 
-  # Récupérer la deuxième release (la première étant celle actuellement utilisée)
   PREVIOUS_RELEASE=$(echo "$RELEASES" | sed -n '2p')
 
   if [ -z "$PREVIOUS_RELEASE" ]; then
@@ -84,18 +140,16 @@ rollback() {
     exit 1
   fi
 
-  # Afficher la version vers laquelle on effectue le rollback
   ln -sfn "$RELEASES_DIR/$PREVIOUS_RELEASE" "$CURRENT_LINK"
   echo "Rollback effectué. Vous utilisez maintenant la release : $PREVIOUS_RELEASE"
 }
 
-# Vérifier la commande (deploy ou rollback)
 if [ "$1" == "deploy" ]; then
   deploy
 elif [ "$1" == "rollback" ]; then
   rollback
 else
-  echo "Usage : $0 [-k number_of_releases_to_keep] deploy|rollback"
+  echo "Usage : $0 [-k number_of_releases_to_keep] [-r git_repo] [-b git_branch] [-s git_subdir] deploy|rollback"
   exit 1
 fi
 
