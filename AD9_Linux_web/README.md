@@ -1,5 +1,3 @@
-# AD9 - Consolidation Linux pour le web
-
 ## Chaîner les commandes usuelles
 
 Pour les exercices suivants, consignez la commande demandée dans un fichier, joignez éventuellement des caputures d'écran.
