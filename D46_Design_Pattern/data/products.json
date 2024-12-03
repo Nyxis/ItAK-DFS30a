@@ -1,0 +1,26 @@
+[
+    {
+        "ean": "123456781",
+        "type": "marchandise",
+        "designation": "lorem ipsum 1",
+        "poids": 123
+    },
+    {
+        "ean": "123456782",
+        "type": "marchandise",
+        "designation": "lorem ipsum 2",
+        "poids": 456
+    },
+    {
+        "ean": "123456782",
+        "type": "marchandise",
+        "designation": "lorem ipsum 3",
+        "poids": 789
+    },
+    {
+        "ean": "09876543",
+        "type": "service",
+        "mission": "trouver un dahu (vivant)",
+        "duree": 2
+    }
+]
