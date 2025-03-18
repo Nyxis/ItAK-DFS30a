@@ -11,6 +11,7 @@ Pour déposer vos développements et livrables en général, vous devez suivre l
 
   - [AD9 : "Consolidation des compétences système : Linux pour le web".](AD9_Linux_web/README.md)
   - [D46 : "Programmation Web III : Design Pattern".](D46_Design_Pattern/README.md)
+  - [D11 : "Développement Web IV : Frameworks PHP".](D11_Frameworks_Php/README.md)
 
 ## Documentation
 
