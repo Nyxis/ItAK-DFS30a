@@ -39,7 +39,7 @@ Implémentez les règles suivantes en utilisant le composant formulaire uniqueme
 
 Ajoutez un attribut SKU aux variants produit.
 Ce SKU doit être autogénéré à partir des 3 premières lettres de la marque en majuscule - taille écran - AZ|QW - taille disque. Exemple : APP-16-AZ-2000. La génération doit se faire via le composant formulaire, et il doit être initialisé dès la construction du variant en respectant le prototype suivant :
-```html+php
+```php
 readonly class VariantProduit
 {
     public function __construct(
@@ -52,5 +52,49 @@ readonly class VariantProduit
 }
 ```
 
+## Injection de dépendance - Design Patterns
+
+Le composant d'injection de dépendance de Symfony permet d'implémenter facilement des Design Patterns difficiles à mettre en place dans d'autres contextes, comme par exemple le pattern Visitor.
+
+Nous allons implémenter ce pattern, appliqué à une gestion de stocks multi-canal.
+Pour connaitre la disponibilité d'un produit à la vente, nous devons interroger les entrepots sur un stock. Créez un service `WarehouseCollection`, qui expose une méthode `getSellableStock(VariantProduit $variant) : SellableStock`.
+
+La classe SellableStock est un Value-Object, qui permet de définir un ensemble cohérent de données, reflettant une élément réel.
+Voici son prototype :
+```php
+final readonly class SellableStock
+{
+    public function __construct(
+        \DateTimeInterface $now,
+        int|bool $quantity,
+        ?\DateInterval $availableIn = null
+    ){}
+
+    public function isAvailable() : bool
+    {}
+
+    public function getAvailability() : \DateTimeInterface|null
+    {}
+}
+```
+Implémentez cette classe.
+
+Créez maintenant deux classes qui implémentent un comportement d'entrepot, `WarehouseInterface` dont voici le prototype :
+```php
+interface WarehouseInterface
+{
+    public function supports(ProductVariant $variant) : bool;
+    public function getSellableStock(ProductVariant $variant) : SellableStock;
+}
+```
+
+L'une de ces Warehouses représente un fournisseur à qui nous pouvons passer des commandes, mais avec un délai; le second avec un stock prédéfini de VariantProduit, passés en construction.
+Implémentez ces classes, puis utilisez la technique vu en cours pour les injecter sous forme d'iterable dans la `WarehouseCollection`.
+
+Implémentez maintenant la méthode `getSellableStock` de WarehouseCollection pour qu'elle itère sur les WarehouseInterface, lise leur stock et produise un stock synthétique.
+
+Si une nouvelle règle apparaît, comme par exemple un stock à l'étranger, seule l'implémentation d'une nouvelle WarehouseInterface ne sera nécessaire, sans modifier la structure des autres règles, ni les structure des données rendues.
+
 ## Sécurité
 
+## Templating
