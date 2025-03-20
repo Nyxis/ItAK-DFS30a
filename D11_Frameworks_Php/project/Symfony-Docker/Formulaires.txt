@@ -1,0 +1,28 @@
+Formulaires:
+	
+	Affiche champs FormView
+	Valider champs FormType
+	Mapper le POST Form
+
+	Prototype = objet concret (Factory | Builder)
+	Un objet qui décris comment dois être un autre objet
+
+	Decorator = créée une nouvelle fonction
+
+	FormType 
+	->add(_,_)
+		//$builder, getform()
+	form
+	->submit([])
+		Workflow mapping
+		//$form ->create View
+	HTML
+		//{{form_rest(form)}}
+
+	HTTP POST
+
+	
+____________________________________________________________________
+
+	-> createForm(…, Type, $prod, []);
+	<value = (setTrucmule()/>	//Culture : PropertyAccessor

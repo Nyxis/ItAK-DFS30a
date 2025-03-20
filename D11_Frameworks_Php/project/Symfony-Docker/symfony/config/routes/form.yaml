@@ -1,0 +1,4 @@
+form:
+  path: /form
+  controller: App\Controller\FormController::index
+  methods: GET|POST

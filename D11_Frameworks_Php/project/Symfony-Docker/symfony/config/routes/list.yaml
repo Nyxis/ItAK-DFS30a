@@ -1,0 +1,5 @@
+#[Route("/list", name: "list")]
+list:
+  path: /list
+  controller: App\Controller\ListController::index
+  methods: GET|POST

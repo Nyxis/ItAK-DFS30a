@@ -5,9 +5,15 @@ namespace Component\Catalogue\Model;
 class Produit
 {
     public function __construct(
-        protected string $ean,
-        protected TypeProduit $typeProduit,
-        protected AttributProduitCollection $attributProduits
+        public string $ean,
+        public string $type,
+        public ?string $designation = null,
+        public ?int $poids = null,
+        public ?string $mission = null,
+        public ?int $duree = null
     ) {
     }
+
+   
 }
+

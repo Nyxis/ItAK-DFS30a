@@ -2,8 +2,9 @@
 
 namespace Component\Catalogue\Model;
 
-enum TypeProduit
+class TypeProduit
 {
-    case MARCHANDISE;
-    case SERVICE;
+    public const MARCHANDISE = 'marchandise';
+    public const SERVICE = 'service';
 }
+
