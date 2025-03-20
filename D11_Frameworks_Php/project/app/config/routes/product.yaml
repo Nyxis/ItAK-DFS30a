@@ -1,0 +1,16 @@
+product_index:
+  path: /products
+  controller: App\Controller\ProductController::index
+  methods: GET
+
+product_show:
+  path: /products/{id}
+  controller: App\Controller\ProductController::show
+  methods: GET
+  requirements:
+    id: '\d+'
+
+product_new:
+  path: /products/new
+  controller: App\Controller\ProductController::new
+  methods: GET|POST
