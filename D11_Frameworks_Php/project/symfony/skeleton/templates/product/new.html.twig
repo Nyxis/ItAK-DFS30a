@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Create new Product</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+
+        <div id="variants-collection" data-prototype="{{ form_widget(form.variants.vars.prototype)|e('html_attr') }}">
+            {% for variant in form.variants %}
+                <div class="variant-item">
+                    {{ form_widget(variant) }}
+                    <button type="button" class="remove-variant btn btn-danger">Remove</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" id="add-variant" class="btn btn-secondary">Add Variant</button>
+        <button class="btn btn-primary">Create Product</button>
+    {{ form_end(form) }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let collectionHolder = document.querySelector('#variants-collection');
+            let addButton = document.querySelector('#add-variant');
+            let index = collectionHolder.children.length;
+
+            // Définir le prototype à partir du dataset
+            let prototype = collectionHolder.dataset.prototype;
+
+            // Ajouter un écouteur pour l'ajout de variant
+            addButton.addEventListener('click', function () {
+                // Remplacer "__name__" par l'index du variant
+                let newForm = prototype.replace(/__name__/g, index);
+
+                let newElement = document.createElement('div');
+                newElement.innerHTML = newForm;
+                newElement.classList.add('variant-item');
+
+                // Ajouter un bouton pour supprimer le variant ajouté
+                let removeButton = document.createElement('button');
+                removeButton.type = "button";
+                removeButton.classList.add('remove-variant', 'btn', 'btn-danger');
+                removeButton.textContent = "Remove";
+                removeButton.addEventListener('click', function () {
+                    newElement.remove();
+                });
+
+                newElement.appendChild(removeButton);
+                collectionHolder.appendChild(newElement);
+                index++;
+
+                // Ajouter un écouteur pour le champ type
+                let typeField = newElement.querySelector('[id$="_type"]');
+                let valueField = newElement.querySelector('[id$="_value"]');
+                if (typeField && valueField) {
+                    typeField.addEventListener('change', function () {
+                        updateValueField(typeField, valueField);
+                    });
+
+                    // Initialiser le champ value en fonction du type par défaut
+                    updateValueField(typeField, valueField);
+                }
+            });
+
+            // Ajouter un écouteur pour chaque bouton de suppression de variant
+            document.querySelectorAll('.remove-variant').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    this.parentElement.remove();
+                });
+            });
+
+            // Ajouter un écouteur pour chaque champ type existant
+            document.querySelectorAll('[id$="_type"]').forEach(function (typeField) {
+                let valueField = typeField.closest('.variant-item').querySelector('[id$="_value"]');
+                if (typeField && valueField) {
+                    typeField.addEventListener('change', function () {
+                        updateValueField(typeField, valueField);
+                    });
+
+                    // Initialiser le champ value en fonction du type par défaut
+                    updateValueField(typeField, valueField);
+                }
+            });
+
+            function updateValueField(typeField, valueField) {
+                let options = valueField.querySelectorAll('option');
+                options.forEach(option => option.style.display = 'none');
+
+                if (typeField.value === 'brand') {
+                    valueField.querySelector('option[value="apple"]').style.display = 'block';
+                    valueField.querySelector('option[value="lenovo"]').style.display = 'block';
+                    valueField.querySelector('option[value="msi"]').style.display = 'block';
+                } else if (typeField.value === 'screenSize') {
+                    valueField.querySelector('option[value="14"]').style.display = 'block';
+                    valueField.querySelector('option[value="15"]').style.display = 'block';
+                    valueField.querySelector('option[value="16"]').style.display = 'block';
+                    valueField.querySelector('option[value="17"]').style.display = 'block';
+                } else if (typeField.value === 'diskCapacity') {
+                    valueField.querySelector('option[value="1tb"]').style.display = 'block';
+                    valueField.querySelector('option[value="2tb"]').style.display = 'block';
+                } else if (typeField.value === 'status') {
+                    valueField.querySelector('option[value="draft"]').style.display = 'block';
+                    valueField.querySelector('option[value="published"]').style.display = 'block';
+                    valueField.querySelector('option[value="archived"]').style.display = 'block';
+                } else if (typeField.value === 'keyboardType') {
+                    valueField.querySelector('option[value="qwerty"]').style.display = 'block';
+                    valueField.querySelector('option[value="azerty"]').style.display = 'block';
+                }
+            }
+        });
+    </script>
+{% endblock %}
