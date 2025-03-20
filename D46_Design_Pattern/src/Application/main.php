@@ -25,4 +25,4 @@ function main(array $args) {
     var_dump($produit);
 }
 
-return main($argv);
+return main($args);

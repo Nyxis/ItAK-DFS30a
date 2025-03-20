@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{# {% block title %}Ajouter un produit{% endblock %} #}
+
+{% block body %}
+    <h1>Ajouter un nouveau produit</h1>
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.Product) }}
+            {{ form_widget(form.Product) }}
+            {{ form_errors(form.Product) }}
+        </div>
+
+        <div>
+            {{ form_label(form.brand) }}
+            {{ form_widget(form.brand) }}
+            {{ form_errors(form.brand) }}
+        </div>
+
+        <div>
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        </div>
+
+        <h2>Variants</h2>
+        <div id="variants-container" data-prototype="{{ form_widget(form.variants.vars.prototype)|e('html_attr') }}">
+            {{ form_widget(form.variants) }}
+        </div>
+
+
+        <button type="button" id="add-variant">Ajouter un variant</button>
+
+        <button type="submit">Enregistrer</button>
+    {{ form_end(form) }}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let container = document.getElementById("variants-container");
+            let addVariantButton = document.getElementById("add-variant");
+
+            addVariantButton.addEventListener("click", function () {
+                let prototype = container.dataset.prototype;
+                let index = container.children.length;
+                let newForm = prototype.replace(/__name__/g, index);
+                container.insertAdjacentHTML("beforeend", newForm);
+            });
+        });
+    </script>
+{% endblock %}

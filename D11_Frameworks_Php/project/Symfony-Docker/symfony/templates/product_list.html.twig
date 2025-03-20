@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block body %}
+    <h1>Catalogue des produits</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Marque</th>
+                <th>Statut</th>
+                <th>Variants</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.Product }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>{{ product.status }}</td>
+                    <td>
+                        {% if product.variants is not empty %}
+                            <ul>
+                                {% for variant in product.variants %}
+                                    <li>
+                                        Écran : {{ variant.screncSize }} pouces, 
+                                        Disque : {{ variant.hdCapacity }} To, 
+                                        Clavier : {{ variant.keyBoardType }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            Aucun variant
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucun produit enregistré.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

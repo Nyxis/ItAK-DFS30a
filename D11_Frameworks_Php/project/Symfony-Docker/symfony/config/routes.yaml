@@ -1,0 +1,10 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+# Charge automatiquement tous les fichiers YAML du dossier routes/
+when@dev:
+  - resource: "../config/routes/"
+    type: directory
