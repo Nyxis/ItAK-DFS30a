@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Product created successfully!</h1>
+    <h2>Product Name: {{ product.name }}</h2>
+
+    {% if product.variants|length > 0 %}
+        <h3>Variants:</h3>
+        <ul>
+            {% for variant in product.variants %}
+                <li>{{ variant.type }}: {{ variant.value }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No variants available for this product.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+customer:
+    path: /customer
+    controller: App\Controller\CustomerController::show
+    defaults:
+        template: customer/index.html.twig
