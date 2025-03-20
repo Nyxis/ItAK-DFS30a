@@ -1,0 +1,76 @@
+services:
+  linter:
+    build:
+      context: .
+      dockerfile: ./.docker/linter/DockerFile
+    volumes:
+      - .:/app
+    working_dir: /app
+
+  web:
+    build:
+      context: .
+      dockerfile: ./.docker/nginx/DockerFile
+    ports:
+      - "${LOCAL_PORT}:443"
+    volumes:
+      - ./public:/var/www/symfony/public:ro
+      - ./.docker/nginx/vhosts:/etc/nginx/conf.d/
+    networks:
+      default:
+        aliases:
+          - web
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: .
+      dockerfile: ./.docker/php/DockerFile
+    env_file:
+      - .env
+      - .env.local
+    environment:
+      - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASE}?serverVersion=8.0.32&charset=utf8mb4
+    volumes:
+      - ./.env:/var/www/symfony/.env
+      - ./.env.local:/var/www/symfony/.env.local
+      - ./bin:/var/www/symfony/bin
+      - ./config:/var/www/symfony/config
+      - ./migrations:/var/www/symfony/migrations
+      - ./public:/var/www/symfony/public
+      - ./scripts:/var/www/symfony/scripts
+      - ./src:/var/www/symfony/src
+      - ./templates:/var/www/symfony/templates
+      - ./tests:/var/www/symfony/tests
+      - ./vendor:/var/www/symfony/vendor
+      - ./composer.lock:/var/www/symfony/composer.lock
+      - ./composer.json:/var/www/symfony/composer.json
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:lts
+    volumes:
+      - ./.docker/mysql/data/dump:/docker-entrypoint-initdb.d
+      - ./.docker/mysql/data/db:/var/lib/mysql
+    env_file:
+      - .env
+      - .env.local
+
+#   node:
+#     image: node:12
+#     env_file:
+#       - .env
+#       - .env.local
+#     volumes:
+#       - ./package.json:/app/package.json
+#       - ./package-lock.json:/app/package-lock.json
+#       - ./postcss.config.js:/app/postcss.config.js
+#       - ./assets:/app/assets
+#       - ./public/css:/app/public/css
+#     working_dir: /app
+#     command: bash -c "npm install --loglevel verbose; npm start"
+
+# volumes:
+#   public-css:

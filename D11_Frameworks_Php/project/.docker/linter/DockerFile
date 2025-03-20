@@ -1,0 +1,13 @@
+FROM php:8.4-cli-alpine
+
+# Installation des outils
+RUN apk update && apk add --no-cache \
+    jq \
+    yamllint \
+    nodejs \
+    npm \
+    && npm install -g eslint
+
+# Php Cs-fixer
+RUN curl -L https://cs.symfony.com/download/php-cs-fixer-v3.phar -o /usr/local/bin/php-cs-fixer \
+    && chmod +x /usr/local/bin/php-cs-fixer

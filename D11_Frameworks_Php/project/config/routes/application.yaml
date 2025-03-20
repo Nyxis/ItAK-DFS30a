@@ -1,0 +1,7 @@
+#
+# products module
+#
+products:
+    resource:     "./application/products.yaml"
+    prefix:       /products
+    name_prefix:  products/

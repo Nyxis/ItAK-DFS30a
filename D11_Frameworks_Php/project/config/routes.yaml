@@ -1,0 +1,16 @@
+#
+# application
+#
+application:
+    resource:     "./routes/application.yaml"
+    defaults:
+        _format:  html
+
+#
+# Dev tools
+#
+when@dev:
+    web_profiler:
+        resource: "./routes/web_profiler.yaml"
+    framework:
+        resource: "./routes/framework.yaml"

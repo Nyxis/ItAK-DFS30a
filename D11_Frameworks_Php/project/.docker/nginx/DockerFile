@@ -1,0 +1,13 @@
+FROM nginx:alpine
+
+# Installer OpenSSL
+RUN apk update && apk add --no-cache openssl
+
+# Créer le dossier pour les certificats
+RUN mkdir -p /etc/nginx/certs
+
+# Générer le certificat auto-signé et la clé
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -subj "/C=FR/ST=France/L=Lyon/O=NyxCorp/OU=Dev/CN=localhost" \
+    -keyout /etc/nginx/certs/server.key \
+    -out /etc/nginx/certs/server.crt

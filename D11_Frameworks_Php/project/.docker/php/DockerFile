@@ -1,0 +1,30 @@
+FROM php:8.4-fpm
+
+# Désactive les interactions pendant l'installation des paquets
+ARG DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /var/www/symfony
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        zlib1g-dev \
+        libzip-dev \
+        libicu-dev \
+    && docker-php-ext-install -j$(nproc) bcmath zip intl pdo pdo_mysql opcache \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug opcache \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copie la configuration PHP personnalisée
+COPY ./.docker/php/php.ini /usr/local/etc/php/php.ini
+COPY ./.docker/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./.docker/php/php-fpm.pool.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Installe Composer (en autorisant l'exécution en tant que root dans Docker)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl -sS https://get.symfony.com/cli/installer | bash \
+    && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
+# Symfony folders
+RUN mkdir var/ && mkdir var/cache && mkdir var/log && chmod 777 -R var

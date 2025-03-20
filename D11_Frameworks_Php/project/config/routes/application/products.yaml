@@ -1,0 +1,12 @@
+list:
+  path: /
+  controller: Application\Controller\ProductController::listAction
+
+create:
+  path: /create
+  controller: Application\Controller\ProductController::createAction
+
+update:
+  path: /update
+  controller: Application\Controller\ProductController::updateAction
+
