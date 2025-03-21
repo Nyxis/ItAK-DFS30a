@@ -1,0 +1,13 @@
+product_list:
+    path: /product
+    controller: App\Controller\ProductController::list
+
+product_detail:
+    path: /product/{id}
+    controller: App\Controller\ProductController::detail
+    requirements:
+        id: \d+
+
+product_new:
+    path: /product/new
+    controller: App\Controller\ProductController::new

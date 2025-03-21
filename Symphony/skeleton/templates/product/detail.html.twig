@@ -1,0 +1,22 @@
+{# templates/product/detail.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Product Detail{% endblock %}
+
+{% block body %}
+    <h1>{{ product.name }} - {{ product.brand.value }}</h1>
+    <p><strong>Status:</strong> {{ product.status.value }}</p>
+
+    <h3>Variants</h3>
+    <ul>
+        {% for variant in product.variants %}
+            <li>
+                <p><strong>SKU:</strong> {{ variant.sku }}</p>
+                <p><strong>Screen Size:</strong> {{ variant.screenSize }}</p>
+                <p><strong>HD Capacity:</strong> {{ variant.hdCapacity }}</p>
+                <p><strong>Keyboard Type:</strong> {{ variant.keyboardType.value }}</p>
+
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

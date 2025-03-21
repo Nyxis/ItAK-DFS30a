@@ -1,0 +1,65 @@
+{# templates/product/form.html.twig #}
+{#
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block body %}
+    <h1>New Product</h1>
+    {{ form_start(form) }}
+        {{ form_row(form.bandName) }}
+        {{ form_row(form.release) }}
+        {{ form_row(form.country) }}
+        {{ form_row(form.albumCover) }}
+        {{ form_row(form.description) }}
+    <h2>Styles of Music</h2>
+    <div data-prototype="{{ form_widget(form.variants.vars.prototype)|e('html_attr') }}">
+        {{ form_widget(form.variants) }}
+    </div>
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+{% endblock %}#}
+
+
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.brand) }}
+    {{ form_row(form.status) }}
+
+    <h3>Variants</h3>
+    <div id="variants" data-prototype="{{ form_widget(form.variants.vars.prototype)|e('html_attr') }}">
+        {% for variant in form.variants %}
+            <div class="variant">
+                {{ form_row(variant.screenSize) }}
+                {{ form_row(variant.hdCapacity) }}
+                {{ form_row(variant.keyboardType) }}
+                <button type="button" class="remove-variant">Remove</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="add-variant" data-target="#variants">Add Variant</button>
+
+    <button type="submit">Save</button>
+    {{ form_end(form) }}
+
+    <script>
+        document.querySelector('.add-variant').addEventListener('click', function(e) {
+            const collection = document.querySelector(e.target.dataset.target);
+            const prototype = collection.dataset.prototype;
+            const newItem = prototype.replace(/__name__/g, collection.children.length);
+            collection.insertAdjacentHTML('beforeend', newItem);
+        });
+
+        document.querySelectorAll('#variants').forEach(collection => {
+            collection.addEventListener('click', e => {
+                if (e.target.classList.contains('remove-variant')) {
+                    e.target.closest('.variant').remove();
+                }
+            });
+        });
+    </script>
+{% endblock %}
