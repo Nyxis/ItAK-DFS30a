@@ -4,7 +4,7 @@
 
 namespace Jdr::Encounter {
 
-    inline std::ostream& operator<<(std::ostream& os, const Outcome& o) {
+    std::ostream& operator<<(std::ostream& os, const Outcome& o) {
         switch (o) {
             case Outcome::Fumble:   return os << "💀fumble";
             case Outcome::Failure:  return os << "💥échec";

@@ -15,6 +15,7 @@ int main()
     using namespace Jdr::Mj;
     using namespace Jdr::Encounter;
 
+    
     Coin coin4(4); // 🦆
     std::cout << "Coin with 4 flips :" << std::endl;
     for (int i = 0; i<20; i++) {
@@ -31,7 +32,7 @@ int main()
         std::cout << "🪙" << coin10 << " - ";
     }
     std::cout << std::endl << std::endl;
-
+    
     Dice dice6(6);
     std::cout << "Dice with 6 sides :" << std::endl;
     for (int i = 0; i<20; i++) {

@@ -15,7 +15,6 @@ namespace Jdr::Mj {
              */
             virtual GameAccessory* activate() override;
 
-        private:
-            int nbFaces;
+            const int nbFaces;
     };
 };

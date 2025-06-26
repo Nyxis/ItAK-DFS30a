@@ -1,6 +1,7 @@
 #include "Module/Mj/Deck.h"
 #include "Module/Mj/GameAccessory.h"
 #include <iostream>    /* std::cout */
+#include <vector>      /* std::vector */
 
 namespace Jdr::Mj {
 
@@ -40,7 +41,9 @@ namespace Jdr::Mj {
     }
 
     std::ostream& operator<<(std::ostream& os, const Deck& d) {
-        os << d.revealTopCard() << "(" << d.score << "%)";
+        auto result = d.getResult();
+
+        os << d.revealTopCard() << " > " << result.outcome << " (" << result.percentScore.value << "%)";
         
         return os;
     }

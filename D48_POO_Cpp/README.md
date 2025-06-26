@@ -33,15 +33,15 @@ Cette valeur pourra être une réussite, un échec, une réussite critique ou un
 
 3/ Le GM a à sa disposition 3 types de matériels. Créez et implémentez les classes correspondantes en C++, en utilisant le comportement créé précédemment.
  - le dé : il peut être créé avec un nombre de faces. Il génère une valeur correspondante à l'une de ses faces lors du tirage
- - une pièce : elle ne peut renvoyer que deux valeurs, mais est dépendante d'un nombre de lancés donnés initialement (tips: utilisez une fonction récursive)
+ - une pièce : elle ne peut renvoyer que deux valeurs, mais est dépendante d'un nombre de lancés donnés initialement (tips: utilisez une fonction récursive); au moindre lancé "pile", on arrête de lancer.
  - un deck de cartes : il est dépendant d'un nombre de couleurs et de valeurs, sa méthode de génération renvoie une valeur entre 1 et nombre couleurs * nombres valeurs, après deux tirages le premier sur la couleur, le second sur la valeur.
 
 4/ Créez maintenant la méthode de tirage aléatoire pour chacun des éléments précédents et ainsi générer l'objet résultat (avec le bon statut).
-Pour chaque type, calculez les statut en fonction de la valeur retrouvée :
+Pour chaque type, calculez les statuts en fonction de la valeur retrouvée :
     - la plus petite : fumble
     - la valeur maximale : réussite critique
-    - en dessous de la valeur médiane : échec
-    - au dessus de la médiane : réussite
+    - en dessous de la valeur médiane (score à 50%) : échec
+    - au dessus de la médiane (score à 50%) : réussite
 
 5/ Créez maintenant une classe GameMaster.
  - Un GameMaster dispose d'un nombre de dés conséquents de différents types, de deux decks de cartes l'un de trois couleurs de et 18 valeurs, le deuxième de 4 couleurs de 13 valeurs, et de deux pièces.

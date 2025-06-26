@@ -1,6 +1,9 @@
 #pragma once
+#include "Module/Encounter/Result.h"
 #include <random>
 #include <iostream>
+
+using Jdr::Encounter::Result;
 
 namespace Jdr::Mj {
     class GameAccessory {
@@ -9,6 +12,8 @@ namespace Jdr::Mj {
             virtual ~GameAccessory() = default;
 
             virtual GameAccessory* activate() = 0;
+
+            Result getResult() const;
 
             friend std::ostream& operator<<(std::ostream& os, const GameAccessory& g);
         
@@ -20,6 +25,4 @@ namespace Jdr::Mj {
         private:
             std::mt19937 gen;
     };
-
-
 }
