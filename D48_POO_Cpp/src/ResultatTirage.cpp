@@ -1,12 +1,12 @@
 #include "ResultatTirage.hpp"
 
-ResultatTirage::ResultatTirage(int score, const std::string& type)
-    : score(score), type(type) {}
+ResultatTirage::ResultatTirage(int score, int pourcentage)
+    : score(score), pourcentage(pourcentage) {}
 
 int ResultatTirage::getScore() const {
     return score;
 }
 
-std::string ResultatTirage::getType() const {
-    return type;
+int ResultatTirage::getPourcentage() const {
+    return pourcentage;
 }

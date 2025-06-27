@@ -1,5 +1,4 @@
 #include "De.hpp"
-#include "Tirage.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -9,5 +8,6 @@ De::De(int faces) : nbFaces(faces) {
 
 ResultatTirage De::effectuerTirage() {
     int score = (std::rand() % nbFaces) + 1;
-    return Tirage::analyser(score, 1, nbFaces);
+    int pourcentage = static_cast<int>(100.0 * (score - 1) / (nbFaces - 1));
+    return ResultatTirage(score, pourcentage);
 }

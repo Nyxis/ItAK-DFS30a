@@ -1,19 +1,17 @@
 #ifndef RESULTATTIRAGE_HPP
 #define RESULTATTIRAGE_HPP
 
-#include <string>
-
 class ResultatTirage {
 public:
-    ResultatTirage(int score, const std::string& type);
-    ResultatTirage() : score(0), type("Inconnu") {}
+    ResultatTirage(int score, int pourcentage);
+    ResultatTirage() : score(0), pourcentage(0) {}
 
     int getScore() const;
-    std::string getType() const;
+    int getPourcentage() const;
 
 private:
     int score;
-    std::string type;
+    int pourcentage;
 };
 
 #endif

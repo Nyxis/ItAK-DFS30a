@@ -1,5 +1,4 @@
 #include "Deck.hpp"
-#include "Tirage.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -14,6 +13,7 @@ ResultatTirage Deck::effectuerTirage() {
 
     int score = (couleur - 1) * nbValeurs + valeur;
     int max = nbCouleurs * nbValeurs;
+    int pourcentage = static_cast<int>(100.0 * (score - 1) / (max - 1));
 
-    return Tirage::analyser(score, 1, max);
+    return ResultatTirage(score, pourcentage);
 }

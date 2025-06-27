@@ -1,5 +1,4 @@
 #include "Piece.hpp"
-#include "Tirage.hpp"
 #include <cstdlib>
 #include <ctime>
 
@@ -15,5 +14,6 @@ int Piece::lancerRecursif(int n) {
 
 ResultatTirage Piece::effectuerTirage() {
     int totalFace = lancerRecursif(nbLancers);
-    return Tirage::analyser(totalFace, 0, nbLancers);
+    int pourcentage = static_cast<int>(100.0 * totalFace / nbLancers);
+    return ResultatTirage(totalFace, pourcentage);
 }

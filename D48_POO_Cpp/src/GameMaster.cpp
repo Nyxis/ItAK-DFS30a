@@ -16,6 +16,17 @@ GameMaster::GameMaster() {
     decks.emplace_back(4, 13);
 }
 
+std::string GameMaster::evaluerResultat(int pourcentage) {
+    if (pourcentage == 0)
+        return "Fumble";
+    else if (pourcentage == 100)
+        return "Réussite critique";
+    else if (pourcentage <= 50)
+        return "Échec";
+    else
+        return "Réussite";
+}
+
 ResultatGM GameMaster::pleaseGiveMeACrit() {
     size_t totalObjets = des.size() + pieces.size() + decks.size();
     size_t tirage = static_cast<size_t>(std::rand() % totalObjets);
@@ -36,5 +47,7 @@ ResultatGM GameMaster::pleaseGiveMeACrit() {
         typeObjet = "Deck";
     }
 
-    return ResultatGM{typeObjet, resultat};
+    std::string statut = evaluerResultat(resultat.getPourcentage());
+
+    return ResultatGM{typeObjet, resultat, statut};
 }

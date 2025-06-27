@@ -2,34 +2,34 @@
 #include "De.hpp"
 #include "Piece.hpp"
 #include "Deck.hpp"
-#include "Tirage.hpp"
 #include "GameMaster.hpp"
 
 int main() {
-    // Étape 4
     De de(6);
     Piece piece(3);
     Deck deck(4, 13);
 
     ResultatTirage resDe = de.effectuerTirage();
-    std::cout << "[Dé] Score: " << resDe.getScore() << " | Type: " << resDe.getType() << std::endl;
+    std::cout << "[Dé] Score: " << resDe.getScore()
+              << " | Pourcentage: " << resDe.getPourcentage() << "%" << std::endl;
 
     ResultatTirage resPiece = piece.effectuerTirage();
-    std::cout << "[Pièce] Score: " << resPiece.getScore() << " | Type: " << resPiece.getType() << std::endl;
+    std::cout << "[Pièce] Score: " << resPiece.getScore()
+              << " | Pourcentage: " << resPiece.getPourcentage() << "%" << std::endl;
 
     ResultatTirage resDeck = deck.effectuerTirage();
-    std::cout << "[Deck] Score: " << resDeck.getScore() << " | Type: " << resDeck.getType() << std::endl;
+    std::cout << "[Deck] Score: " << resDeck.getScore()
+              << " | Pourcentage: " << resDeck.getPourcentage() << "%" << std::endl;
 
     std::cout << "\n=== Tirage par GameMaster ===" << std::endl;
 
-    // Étape 5
     GameMaster gm;
     ResultatGM resGM = gm.pleaseGiveMeACrit();
 
     std::cout << "[GameMaster] Objet : " << resGM.typeObjet
               << " | Score : " << resGM.resultat.getScore()
-              << " | Statut : " << resGM.resultat.getType()
-              << std::endl;
+              << " | Pourcentage : " << resGM.resultat.getPourcentage() << "%"
+              << " | Statut : " << resGM.statut << std::endl;
 
     return 0;
 }
