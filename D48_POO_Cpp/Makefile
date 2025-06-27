@@ -1,3 +1,6 @@
+# Cibles fictives (qui ne servent pas à générer directement un fichier)
+.PHONY: all clean
+
 # Dossiers
 SRC_DIR := src
 INC_DIR := include
@@ -21,7 +24,7 @@ all: $(MAIN)
 
 # Pour que le main se génère, il faut que tous les autres binaires de tous les fichiers .cpp soient créés
 $(MAIN): $(OBJS)
-	$(CXX) $^ -o $@
+	@$(CXX) $^ -o $@
 
 # Compilation des .cpp > .o
 # 
@@ -32,7 +35,7 @@ $(MAIN): $(OBJS)
 #
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) -c $< -o $@
+	@$(CXX) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR)
