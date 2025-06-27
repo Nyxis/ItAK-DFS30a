@@ -8,12 +8,11 @@ namespace rpg {
 
 class Result {
 private:
-    int value;
     int percent;
     ResultType type;
 
 public:
-    Result(int value, int percent, ResultType type);
+    Result( int percent, ResultType type);
     ~Result() = default;
 
     int getValue() const;

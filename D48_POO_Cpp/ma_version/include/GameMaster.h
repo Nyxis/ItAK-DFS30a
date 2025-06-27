@@ -4,22 +4,29 @@
 #include <vector>
 #include <memory>
 #include "RandomGenerator.h"
-#include "Result.h"
+#include "Scenario.h"
+#include "Adventurer.h"
 
 namespace rpg {
 
 class GameMaster {
 private:
     std::vector<std::shared_ptr<RandomGenerator>> gameAccessories;
+    std::vector<std::shared_ptr<Adventurer>> adventurers;
 
-    void setupGameAccessories();
-    ResultType evaluate(int percent) const;
-
-public:
+    
+    void setupDefaultAccessories();
+    
+    public:
     GameMaster();
     ~GameMaster() = default;
-
-    Result pleaseGiveMeACrit();
+    
+    void addAccessory(const std::shared_ptr<RandomGenerator>& accessory);
+    bool hasAccessories() const;
+    void clearAccessories();
+    
+    void registerAdventurer(const std::shared_ptr<Adventurer>& adventurer);
+    void playScenario(const Scenario& scenario);
 };
 
 }

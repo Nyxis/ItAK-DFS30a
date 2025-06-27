@@ -2,16 +2,14 @@
 
 namespace rpg {
 
-Result::Result(int value, int percent, ResultType type)
-    : value(value), percent(percent), type(type) {}
+Result::Result( int percent, ResultType type)
+    : percent(percent), type(type) {}
 
 int Result::getPercent() const {
     return percent;
 }
 
-int Result::getValue() const {
-    return value;
-}
+
 
 ResultType Result::getType() const {
     return type;
