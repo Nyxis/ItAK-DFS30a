@@ -38,13 +38,31 @@ Cette valeur pourra être une réussite, un échec, une réussite critique ou un
 
 4/ Créez maintenant la méthode de tirage aléatoire pour chacun des éléments précédents et ainsi générer l'objet résultat (avec le bon statut).
 Pour chaque type, calculez les statuts en fonction de la valeur retrouvée :
-    - la plus petite : fumble
-    - la valeur maximale : réussite critique
-    - en dessous de la valeur médiane (score à 50%) : échec
-    - au dessus de la médiane (score à 50%) : réussite
+  - la plus petite : fumble
+  - la valeur maximale : réussite critique
+  - en dessous de la valeur médiane (score à 50%) : échec
+  - au dessus de la médiane (score à 50%) : réussite
 
 5/ Créez maintenant une classe GameMaster.
  - Un GameMaster dispose d'un nombre de dés conséquents de différents types, de deux decks de cartes l'un de trois couleurs de et 18 valeurs, le deuxième de 4 couleurs de 13 valeurs, et de deux pièces.
  - un GameMaster peut effectuer des tirages via la méthode `pleaseGiveMeACrit`. Le GameMaster sélectionne l'une des instances de Dice / Deck et Coin au hasard et renvoie une constante correspondant au type de résultat.
 
 6/ Dans une vraie partie de JdR, les résulats ne sont pas fixes, ils sont souvent interprétés par le GameMaster en fonction d'un contexte. Modifiez votre classe de résultat afin qu'elle renvoie un score en pourcentage, puis déléguez la responsabilité de l'attribution du type de résultat (Critique / Succès / Echec / Fumble) à la classe GameMaster.
+
+7/ Nous allons maintenant faire évoluer notre GameMaster pour qu'il soit capable de faire jouer des Scénarii à un ou plusieurs Aventuriers. Commençons par créer les classes suivantes :
+ - **Encounter** : une rencontre contre un élément hostile, comporte un titre, une description et une échelle de score pour les 4 issues - c'est lui qui génèrera les objets Result désormais, vu qu'il peut comparer le score donné par le GameMaster à son échelle interne
+ - **Scenario** : ensemble de rencontres avec un nom
+ - **Adventurer** : représente un membre du groupe, il possède :
+    - un nom
+    - un niveau
+    - un maximum de points de vie
+    - un nombre de points de vie actuel
+
+    et les méthodes pour le soigner, le blesser, le tuer et le faire monter de niveau.
+
+8/ Design Pattern [Composite](https://refactoring.guru/fr/design-patterns/composite) - Pour simplifier l'implémentation des scenarii dans le cas où plusieurs aventuriers se rassemblent, il est possible d'abstraire le comportement d'un ensemble d'aventuriers comme un aventurier seul.
+Créez donc la classe Party, qui hérite de Adventurer, et qui prend un vecteur d'Adventurer en paramètre. Adaptez ensuite les méthodes pour que les comportements s'adaptent à la situation de groupe :
+  - Une blessure infligée l'est à l'aventurier qui a le plus de points de vies
+  - Si un niveau doit être gagné, il l'est à celui qui a le niveau le plus bas
+  - Le niveau du groupe est égal à la somme des niveaux des participants * 1+(2* nbAdventurer) - attention, il doit être immutable
+  - Si on "tue" une Party, on tue un membre du groupe au hasard

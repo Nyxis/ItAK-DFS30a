@@ -14,8 +14,8 @@ namespace Jdr::Mj {
     Deck* Deck::shuffle() 
     {
         this->topCard = std::make_pair(
-            this->rand(0, this->colors.size() - 1),
-            this->rand(0, this->values.size() - 1)
+            this->randomizer.rand(this->colors),
+            this->randomizer.rand(this->values)
         );
 
         this->value = this->topCard.first * this->values.size() + this->topCard.second;
@@ -41,9 +41,7 @@ namespace Jdr::Mj {
     }
 
     std::ostream& operator<<(std::ostream& os, const Deck& d) {
-        auto result = d.getResult();
-
-        os << d.revealTopCard() << " > " << result.outcome << " (" << result.percentScore.value << "%)";
+        os << d.revealTopCard() << " (" << d.score << "%)";
         
         return os;
     }

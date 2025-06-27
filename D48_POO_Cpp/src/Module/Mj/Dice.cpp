@@ -8,7 +8,7 @@ namespace Jdr::Mj {
 
     Dice* Dice::roll()
     {
-        this->value = this->rand(1, this->nbFaces);
+        this->value = this->randomizer.rand(1, this->nbFaces);
         this->score = std::round(static_cast<double>(this->value) / this->nbFaces * 100.0);
 
         return this;

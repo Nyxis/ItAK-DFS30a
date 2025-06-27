@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 #include "Module/Encounter/Outcome.h"
 #include "Lib/PercentInt.h"
 
@@ -11,5 +12,8 @@ namespace Jdr::Encounter {
 
         const Outcome outcome;
         const PercentInt percentScore;
+        
     };    
+    
+    std::ostream& operator<<(std::ostream& os, const Result& r);
 }

@@ -3,6 +3,7 @@
 #include "Module/Mj/Coin.h"
 #include "Module/Mj/Dice.h"
 #include "Module/Mj/Deck.h"
+#include "Module/Mj/GameMaster.h"
 #include "Module/Encounter/Result.h"
 #include "Module/Encounter/Outcome.h"
 
@@ -14,7 +15,6 @@ int main()
 {
     using namespace Jdr::Mj;
     using namespace Jdr::Encounter;
-
     
     Coin coin4(4); // 🦆
     std::cout << "Coin with 4 flips :" << std::endl;
@@ -70,6 +70,15 @@ int main()
         std::cout << fantasyDeck << " - ";
     }
     std::cout << std::endl << std::endl;
+
+    GameMaster gameMaster({
+        &coin4, &coin10, &dice6, &dice20, &classicDeck, &fantasyDeck
+    });
+
+    for (int i = 0; i < 30; i++) {
+        Result result = gameMaster.pleaseGiveMeACrit();
+        std::cout << result << std::endl;
+    }
 
     return 0;
 }

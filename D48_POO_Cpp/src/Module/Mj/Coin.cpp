@@ -40,7 +40,7 @@ namespace Jdr::Mj {
             return currentFlip;
         }
 
-        return this->rand(0, 1) ? // 0 for tails, 1 for heads
+        return this->randomizer.rand(1) ? // 0 for tails, 1 for heads
             this->flipUntilFailureOrMaxFlips(currentFlip + 1) :
             currentFlip - 1;
     }
