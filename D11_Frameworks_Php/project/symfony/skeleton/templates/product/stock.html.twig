@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Stock des variantes pour le produit {{ productName }}</h1>
+
+{% for entry in sellableStocks %}
+    <div>
+        <h3>{{ entry.variant.type }} : {{ entry.variant.value }}</h3>
+        <p>Stock disponible : {{ entry.sellableStock.quantity }}</p>
+        <p>Disponible à partir du : {{ entry.sellableStock.getAvailability()|date('Y-m-d H:i:s') }}</p>
+    </div>
+{% else %}
+    <p>Aucune variante disponible pour ce produit.</p>
+{% endfor %}
+{% endblock %} 

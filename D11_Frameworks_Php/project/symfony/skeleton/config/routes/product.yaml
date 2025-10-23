@@ -1,0 +1,13 @@
+show:
+    path: /product
+    controller: App\Controller\ProductController::show
+    defaults:
+        template: product/index.html.twig
+
+new:
+    path: /product/new
+    controller: App\Controller\ProductController::new
+
+product_success:
+    path: /product/success
+    controller: App\Controller\ProductController::success

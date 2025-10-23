@@ -1,0 +1,13 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+product:
+    resource: './routes/product.yaml'
+    type: 'yaml'
+
+customer:
+    resource: './routes/customer.yaml'
+    type: 'yaml'
